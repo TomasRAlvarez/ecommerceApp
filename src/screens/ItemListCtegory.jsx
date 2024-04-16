@@ -8,17 +8,38 @@ const ItemListCtegory = ({ navigation, route }) => {
 	const [productsFilter, setProductsFilter] = useState([]);
 
 	useEffect(() => {
-		const prodFil = products.filter((product) => product.category === categorySelected);
+		const prodFil = products.filter(
+			(product) => product.category === categorySelected
+		);
 		setProductsFilter(prodFil);
 	}, [categorySelected]);
 
 	return (
-		<View>
-			<FlatList data={productsFilter} keyExtractor={(prod) => prod.id} renderItem={({ item }) => <ItemCard product={item} navigation={navigation} />} />
+		<View style={styles.container}>
+			<FlatList
+				data={productsFilter}
+				keyExtractor={(prod) => prod.id}
+				renderItem={({ item }) => (
+					<ItemCard product={item} navigation={navigation} />
+				)}
+				numColumns={2}
+				columnWrapperStyle={styles.columnWrapper}
+				showsVerticalScrollIndicator={false}
+			/>
 		</View>
 	);
 };
 
 export default ItemListCtegory;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	container: {
+		width: "100%",
+		alignItems: "center",
+		alignSelf: "center",
+	},
+
+	columnWrapper: {
+		justifyContent: "space-evenly",
+	},
+});
