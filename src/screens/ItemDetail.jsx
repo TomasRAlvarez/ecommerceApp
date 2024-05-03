@@ -2,17 +2,20 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
 
-const ItemDetail = ({ route }) => {
+const ItemDetail = ({ navigation, route }) => {
 	const { product: prodDetail } = route.params;
+
+	React.useLayoutEffect(() => {
+		navigation.setOptions({
+			headerTitle: prodDetail.title,
+		});
+	}, [navigation]);
+
 	return (
 		<View style={styles.container}>
 			<Text style={styles.txtTitle}>{prodDetail.title}</Text>
 			<View style={styles.imgContainer}>
-				<Image
-					style={styles.img}
-					source={{ uri: prodDetail.images[0] }}
-					resizeMode='cover'
-				/>
+				<Image style={styles.img} source={{ uri: prodDetail.images[0] }} resizeMode='cover' />
 			</View>
 			<View style={styles.detailContainer}>
 				<Text style={styles.txtDescription}>{prodDetail.description}</Text>
