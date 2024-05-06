@@ -64,7 +64,7 @@ export default BottomTabNavigator;
 
 const styles = StyleSheet.create({
 	tabNav: {
-		height: 60,
+		height: 70,
 		backgroundColor: colors.primary,
 	},
 });

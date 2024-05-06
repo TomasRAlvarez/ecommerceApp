@@ -1,6 +1,7 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
+import AddToCart from "../components/AddToCart";
 
 const ItemDetail = ({ navigation, route }) => {
 	const { product: prodDetail } = route.params;
@@ -27,6 +28,7 @@ const ItemDetail = ({ navigation, route }) => {
 					<Text style={styles.txtPrice}>${prodDetail.price}</Text>
 				</View>
 			</View>
+			<AddToCart product={prodDetail} />
 		</View>
 	);
 };
@@ -65,15 +67,16 @@ const styles = StyleSheet.create({
 
 	detailContainer: {
 		width: "90%",
-		height: 150,
+		height: 120,
 		alignItems: "center",
 		justifyContent: "space-between",
 	},
 
 	txtDescription: {
 		width: "100%",
+		maxHeight: 150,
 		textAlign: "left",
-		fontSize: 20,
+		fontSize: 15,
 	},
 
 	statsContainer: {
