@@ -1,10 +1,11 @@
 import { FlatList, StyleSheet, TextInput, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import products from "../data/products.json";
 import ItemCard from "../components/ItemCard";
 import { colors } from "../constants/colors";
+import { useSelector } from "react-redux";
 
 const ItemListCategory = ({ navigation, route }) => {
+	const productsFilteredByCategory = useSelector((state) => state.shopReducer.value.productsFilteredByCategory);
 	const { category: categorySelected } = route.params;
 	const [productsFilter, setProductsFilter] = useState([]);
 	const [searchValue, setSearchValue] = useState("");
@@ -16,17 +17,12 @@ const ItemListCategory = ({ navigation, route }) => {
 	}, [navigation]);
 
 	useEffect(() => {
-		const prodFil = products.filter((product) => product.category === categorySelected);
+		const prodFil = productsFilteredByCategory.filter((product) => {
+			const prodTitle = product.title.toLowerCase();
+			return prodTitle.includes(searchValue.toLowerCase());
+		});
 
 		setProductsFilter(prodFil);
-
-		if (searchValue) {
-			const prodSearch = prodFil.filter((product) => {
-				let prodTitle = product.title.toLowerCase();
-				return prodTitle.includes(searchValue.toLowerCase());
-			});
-			setProductsFilter(prodSearch);
-		}
 	}, [categorySelected, searchValue]);
 
 	return (
