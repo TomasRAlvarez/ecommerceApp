@@ -1,13 +1,20 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { colors } from "../constants/colors";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { decrement, increment } from "../features/counter/counterSlice";
+import { decrement, increment, reset } from "../features/counter/counterSlice";
+import { addToCart } from "../features/Cart/cartSlice";
 
 const AddToCart = ({ product }) => {
 	const count = useSelector((state) => state.counterReducer.value);
 	const dispatch = useDispatch();
+
+	const handleCart = () => {
+		dispatch(addToCart({ ...product, quantity: count }));
+		dispatch(reset());
+		Alert.alert("¡Listo!", "Tu producto ya se agrego al carrito");
+	};
 
 	return (
 		<View style={styles.container}>
@@ -23,7 +30,7 @@ const AddToCart = ({ product }) => {
 				</View>
 				<Text style={styles.total}>Total: ${(product.price * count).toFixed(2)}</Text>
 			</View>
-			<TouchableOpacity style={styles.addToCartButton}>
+			<TouchableOpacity style={styles.addToCartButton} onPress={handleCart}>
 				<Text style={styles.addToCartButtonText}>Añadir al carrito</Text>
 			</TouchableOpacity>
 		</View>
