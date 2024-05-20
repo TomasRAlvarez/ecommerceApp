@@ -1,10 +1,10 @@
 import { FlatList, StyleSheet, View } from "react-native";
 import React from "react";
 import Category from "../components/Category";
-import { useSelector } from "react-redux";
+import { useGetCategoriesQuery } from "../services/shopService";
 
 const Home = ({ navigation }) => {
-	const categories = useSelector((state) => state.shopReducer.value.categories);
+	const { data, isLoading, error } = useGetCategoriesQuery();
 
 	React.useLayoutEffect(() => {
 		navigation.setOptions({
@@ -14,7 +14,7 @@ const Home = ({ navigation }) => {
 
 	return (
 		<View style={styles.container}>
-			<FlatList keyExtractor={(e) => e} data={categories} renderItem={({ item }) => <Category navigation={navigation} category={item} />} horizontal showsHorizontalScrollIndicator={false} />
+			<FlatList keyExtractor={(e) => e} data={data} renderItem={({ item }) => <Category navigation={navigation} category={item} />} horizontal showsHorizontalScrollIndicator={false} />
 		</View>
 	);
 };

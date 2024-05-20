@@ -8,7 +8,6 @@ import { decrement, increment } from "../features/counter/counterSlice";
 const AddToCart = ({ product }) => {
 	const count = useSelector((state) => state.counterReducer.value);
 	const dispatch = useDispatch();
-	const [quantity, setQuantity] = useState(1);
 
 	return (
 		<View style={styles.container}>
@@ -22,7 +21,7 @@ const AddToCart = ({ product }) => {
 						<FontAwesome6 name='add' size={20} color='black' />
 					</TouchableOpacity>
 				</View>
-				<Text style={styles.total}>Total: ${(product.price * quantity).toFixed(2)}</Text>
+				<Text style={styles.total}>Total: ${(product.price * count).toFixed(2)}</Text>
 			</View>
 			<TouchableOpacity style={styles.addToCartButton}>
 				<Text style={styles.addToCartButtonText}>Añadir al carrito</Text>

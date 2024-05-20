@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 import ItemCard from "../components/ItemCard";
 import { colors } from "../constants/colors";
 import { useSelector } from "react-redux";
+import { useGetProductsByCategoryQuery } from "../services/shopService";
 
 const ItemListCategory = ({ navigation, route }) => {
-	const productsFilteredByCategory = useSelector((state) => state.shopReducer.value.productsFilteredByCategory);
 	const { category: categorySelected } = route.params;
 	const [productsFilter, setProductsFilter] = useState([]);
 	const [searchValue, setSearchValue] = useState("");
+	//const productsFilteredByCategory = useSelector((state) => state.shopReducer.value.productsFilteredByCategory);
+	const { data: productsFilteredByCategory, isLoading } = useGetProductsByCategoryQuery(categorySelected);
 
 	React.useLayoutEffect(() => {
 		navigation.setOptions({
@@ -17,20 +19,22 @@ const ItemListCategory = ({ navigation, route }) => {
 	}, [navigation]);
 
 	useEffect(() => {
-		const prodFil = productsFilteredByCategory.filter((product) => {
-			const prodTitle = product.title.toLowerCase();
-			return prodTitle.includes(searchValue.toLowerCase());
-		});
+		if (!isLoading) {
+			const prodFil = productsFilteredByCategory.filter((product) => {
+				const prodTitle = product.title.toLowerCase();
+				return prodTitle.includes(searchValue.toLowerCase());
+			});
 
-		setProductsFilter(prodFil);
-	}, [categorySelected, searchValue]);
+			setProductsFilter(prodFil);
+		}
+	}, [categorySelected, productsFilteredByCategory, searchValue, isLoading]);
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.searchContainer}>
 				<TextInput style={styles.txtInput} value={searchValue} onChangeText={(e) => setSearchValue(e)} placeholder='Buscar...' />
 			</View>
-			<FlatList data={productsFilter} keyExtractor={(prod) => prod.id} renderItem={({ item }) => <ItemCard product={item} navigation={navigation} />} numColumns={2} showsVerticalScrollIndicator={false} />
+			<FlatList data={productsFilter} keyExtractor={(product) => product.id} renderItem={({ item }) => <ItemCard product={item} navigation={navigation} />} numColumns={2} showsVerticalScrollIndicator={false} />
 		</View>
 	);
 };

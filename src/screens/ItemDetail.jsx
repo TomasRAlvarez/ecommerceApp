@@ -1,36 +1,44 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import AddToCart from "../components/AddToCart";
+import { useGetProductByIdQuery } from "../services/shopService";
 
 const ItemDetail = ({ navigation, route }) => {
-	const { product: prodDetail } = route.params;
+	const { productId: prodId } = route.params;
+	const { data: product, isLoading, error } = useGetProductByIdQuery(prodId);
 
 	React.useLayoutEffect(() => {
-		navigation.setOptions({
-			headerTitle: prodDetail.title,
-		});
-	}, [navigation]);
+		if (!isLoading) {
+			navigation.setOptions({
+				headerTitle: product.title,
+			});
+		}
+	}, [navigation, isLoading]);
 
-	return (
-		<View style={styles.container}>
-			<Text style={styles.txtTitle}>{prodDetail.title}</Text>
-			<View style={styles.imgContainer}>
-				<Image style={styles.img} source={{ uri: prodDetail.images[0] }} resizeMode='cover' />
-			</View>
-			<View style={styles.detailContainer}>
-				<Text style={styles.txtDescription}>{prodDetail.description}</Text>
-				<View style={styles.statsContainer}>
-					<Text style={styles.txtRating}>
-						{prodDetail.rating}/5
-						<AntDesign name='staro' size={26} color='black' />
-					</Text>
-					<Text style={styles.txtPrice}>${prodDetail.price}</Text>
+	if (product) {
+		return (
+			<View style={styles.container}>
+				<Text style={styles.txtTitle}>{product.title}</Text>
+				<View style={styles.imgContainer}>
+					<Image style={styles.img} source={{ uri: product.images[0] }} resizeMode='cover' />
 				</View>
+				<View style={styles.detailContainer}>
+					<Text style={styles.txtDescription}>{product.description}</Text>
+					<View style={styles.statsContainer}>
+						<Text style={styles.txtRating}>
+							{product.rating}/5
+							<AntDesign name='staro' size={26} color='black' />
+						</Text>
+						<Text style={styles.txtPrice}>${product.price}</Text>
+					</View>
+				</View>
+				<AddToCart product={product} />
 			</View>
-			<AddToCart product={prodDetail} />
-		</View>
-	);
+		);
+	} else {
+		return null;
+	}
 };
 
 export default ItemDetail;
