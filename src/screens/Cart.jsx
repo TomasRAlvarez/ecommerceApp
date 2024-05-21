@@ -6,6 +6,7 @@ import { colors } from "../constants/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { emptyCart, removeFromCart } from "../features/Cart/cartSlice";
 import { usePostOrderMutation } from "../services/shopService";
+import { setNewOrder, setNewOrderTrue } from "../features/NewOrder/newOrderSlice";
 
 const Cart = ({ navigation }) => {
 	React.useLayoutEffect(() => {
@@ -16,6 +17,7 @@ const Cart = ({ navigation }) => {
 
 	const { items: CartItems, total } = useSelector((state) => state.cartReducer.value);
 	const [triggerPost] = usePostOrderMutation();
+	const userEmail = useSelector((state) => state.userReducer.value.user);
 
 	const dispatch = useDispatch();
 	const handleRemove = (id) => {
@@ -24,9 +26,9 @@ const Cart = ({ navigation }) => {
 
 	const handleConfirm = async () => {
 		try {
-			const response = await triggerPost({ CartItems, total, user: "loggedUser", date: new Date().toLocaleString() }).unwrap();
-			if (response.name) {
-				Alert.alert("¡Gracias por tu compra!", `Tu orden fue creada exitosamente con el codigo: ${response.name}`, [
+			const response = await triggerPost({ CartItems, total, user: userEmail, date: new Date().toLocaleString() }).unwrap();
+			if (response) {
+				Alert.alert("¡Gracias por tu compra!", `Tu orden fue creada exitosamente con el codigo: ${response}`, [
 					{
 						text: "Ok",
 						onPress: () => {
@@ -41,8 +43,6 @@ const Cart = ({ navigation }) => {
 		} catch (error) {
 			Alert.alert("Error", "Hubo un problema mientras se creaba tu orden");
 		}
-		//triggerPost({ CartItems, total, user: "loggedUser", date: new Date().toLocaleString() });
-		//console.log(a);
 	};
 
 	if (total) {

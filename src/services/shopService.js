@@ -33,10 +33,15 @@ export const shopApi = createApi({
 				body: order,
 			}),
 			transformResponse: (response) => {
-				return response;
+				const responseTransformed = Object.values(response);
+				if (responseTransformed.length) return responseTransformed[0];
+				return null;
 			},
+		}),
+		getOrdersByUser: builder.query({
+			query: () => `orders.json`,
 		}),
 	}),
 });
 
-export const { useGetProductsQuery, useGetCategoriesQuery, useGetProductsByCategoryQuery, useGetProductByIdQuery, usePostOrderMutation } = shopApi;
+export const { useGetProductsQuery, useGetCategoriesQuery, useGetProductsByCategoryQuery, useGetProductByIdQuery, usePostOrderMutation, useGetOrdersByUserQuery } = shopApi;
