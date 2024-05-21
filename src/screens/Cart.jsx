@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Alert } from "react-native";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ProductCart from "../components/ProductCart";
 import { colors } from "../constants/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { removeFromCart } from "../features/Cart/cartSlice";
+import { emptyCart, removeFromCart } from "../features/Cart/cartSlice";
+import { usePostOrderMutation } from "../services/shopService";
 
 const Cart = ({ navigation }) => {
 	React.useLayoutEffect(() => {
@@ -14,10 +15,34 @@ const Cart = ({ navigation }) => {
 	}, [navigation]);
 
 	const { items: CartItems, total } = useSelector((state) => state.cartReducer.value);
+	const [triggerPost] = usePostOrderMutation();
 
 	const dispatch = useDispatch();
 	const handleRemove = (id) => {
 		dispatch(removeFromCart({ id }));
+	};
+
+	const handleConfirm = async () => {
+		try {
+			const response = await triggerPost({ CartItems, total, user: "loggedUser", date: new Date().toLocaleString() }).unwrap();
+			if (response.name) {
+				Alert.alert("¡Gracias por tu compra!", `Tu orden fue creada exitosamente con el codigo: ${response.name}`, [
+					{
+						text: "Ok",
+						onPress: () => {
+							navigation.navigate("Home");
+							dispatch(emptyCart());
+						},
+					},
+				]);
+			} else {
+				Alert.alert("Ups...", "Hubo un problema al crear tu orden");
+			}
+		} catch (error) {
+			Alert.alert("Error", "Hubo un problema mientras se creaba tu orden");
+		}
+		//triggerPost({ CartItems, total, user: "loggedUser", date: new Date().toLocaleString() });
+		//console.log(a);
 	};
 
 	if (total) {
@@ -32,8 +57,12 @@ const Cart = ({ navigation }) => {
 				/>
 				<View style={styles.totalContainer}>
 					<Text style={styles.totalText}>Precio Total: ${total}</Text>
-					<TouchableOpacity style={styles.checkoutButton}>
-						<Text style={styles.checkoutButtonText}>Finalizar Compra</Text>
+					<TouchableOpacity
+						style={styles.checkoutButton}
+						onPress={() => {
+							handleConfirm();
+						}}>
+						<Text style={styles.checkoutButtonText}>Confirmar Compra</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
