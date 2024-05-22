@@ -33,7 +33,7 @@ const ItemDetail = ({ navigation, route }) => {
 						<Text style={styles.txtPrice}>${product.price}</Text>
 					</View>
 				</View>
-				<AddToCart product={product} />
+				<AddToCart navigation={navigation} product={product} />
 			</View>
 		);
 	} else {

@@ -6,14 +6,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { decrement, increment, reset } from "../features/counter/counterSlice";
 import { addToCart } from "../features/Cart/cartSlice";
 
-const AddToCart = ({ product }) => {
+const AddToCart = ({ navigation, product }) => {
 	const count = useSelector((state) => state.counterReducer.value);
+	const user = useSelector((state) => state.userReducer.value.user);
 	const dispatch = useDispatch();
 
 	const handleCart = () => {
-		dispatch(addToCart({ ...product, quantity: count }));
-		dispatch(reset());
-		Alert.alert("¡Listo!", "Tu producto ya se agrego al carrito");
+		if (user) {
+			dispatch(addToCart({ ...product, quantity: count }));
+			dispatch(reset());
+			Alert.alert("¡Listo!", "Tu producto ya se agrego al carrito");
+		} else {
+			Alert.alert("Cuidado", "Debe iniciar sesion para hacer una compra", [
+				{
+					text: "Ok",
+					onPress: () => {
+						navigation.navigate("ProfileNavigator");
+					},
+				},
+			]);
+		}
 	};
 
 	return (

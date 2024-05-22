@@ -1,8 +1,30 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { clearUser } from "../features/User/userSlice";
 
 const UserData = ({ user }) => {
+	const dispatch = useDispatch();
+
+	const handleLogOut = () => {
+		Alert.alert(
+			"Cerrar Sesion",
+			"¿Seguro quiere cerrar sesion?",
+			[
+				{
+					text: "Confirmar",
+					onPress: () => dispatch(clearUser()),
+				},
+				{
+					text: "Cancelar",
+				},
+			],
+			{ cancelable: true }
+		);
+	};
+
 	return (
 		<View style={styles.card}>
 			<View style={styles.header}>
@@ -12,8 +34,8 @@ const UserData = ({ user }) => {
 			<View style={styles.body}>
 				<View style={styles.personalData}>
 					<Text style={styles.title}>Datos Personales</Text>
-					<TouchableOpacity style={styles.editIcon}>
-						<MaterialIcons name='edit' size={20} color='black' />
+					<TouchableOpacity style={styles.editIcon} onPress={handleLogOut}>
+						<Entypo name='log-out' size={24} color='black' />
 					</TouchableOpacity>
 				</View>
 				<Text>{user}</Text>

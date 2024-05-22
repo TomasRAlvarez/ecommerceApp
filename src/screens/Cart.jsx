@@ -6,7 +6,6 @@ import { colors } from "../constants/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { emptyCart, removeFromCart } from "../features/Cart/cartSlice";
 import { usePostOrderMutation } from "../services/shopService";
-import { setNewOrder, setNewOrderTrue } from "../features/NewOrder/newOrderSlice";
 
 const Cart = ({ navigation }) => {
 	React.useLayoutEffect(() => {
