@@ -1,9 +1,9 @@
 import { StyleSheet, Text, Pressable } from "react-native";
 import React from "react";
 import { colors } from "../constants/colors.js";
-import { MaterialIcons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { setCategorySelected } from "../features/shop/shopSlice.js";
+import { icons } from "../constants/icons.js";
 
 const Category = ({ navigation, category }) => {
 	const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const Category = ({ navigation, category }) => {
 				dispatch(setCategorySelected(category));
 				navigation.navigate("ItemListCategory", { category });
 			}}>
-			<MaterialIcons style={styles.icon} name='category' size={24} color='black' />
+			<Text style={styles.icon}>{icons[category]}</Text>
 			<Text style={styles.text}>{category}</Text>
 		</Pressable>
 	);
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
 		borderRadius: 50,
 		padding: 15,
 		elevation: 15,
+		fontSize: 20,
 	},
 
 	text: {

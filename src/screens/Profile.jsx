@@ -19,8 +19,6 @@ const Profile = ({ navigation }) => {
 	const user = useSelector((state) => state.userReducer.value.user);
 	const localId = useSelector((state) => state.userReducer.value.localId);
 	const [image, setImage] = useState(null);
-	const [isImageFromCamera, setIsImageFromCamera] = useState(false);
-	const [imageURI, setImageURI] = useState("");
 	const [triggerPostImage, result] = usePostProfileImageMutation();
 	const { data: imageFromBase } = useGetProfileImageQuery(localId);
 	const dispatch = useDispatch();
@@ -37,7 +35,6 @@ const Profile = ({ navigation }) => {
 
 	const pickLibraryImage = async () => {
 		try {
-			setIsImageFromCamera(false);
 			const permissionGallery = await verifyGalleryPermissions();
 			if (permissionGallery) {
 				const result = await ImagePicker.launchImageLibraryAsync({
@@ -53,7 +50,7 @@ const Profile = ({ navigation }) => {
 				if (!result.canceled) {
 					const image = `data:image/jpeg;base64,${result.assets[0].base64}`;
 					setImage(image);
-					confirmImage();
+					await confirmImage();
 				}
 			}
 		} catch (error) {
@@ -62,8 +59,6 @@ const Profile = ({ navigation }) => {
 	};
 
 	const pickImage = async () => {
-		setIsImageFromCamera(true);
-
 		try {
 			const permissionCamera = await verifyCameraPermissions();
 
@@ -76,10 +71,9 @@ const Profile = ({ navigation }) => {
 					quality: 0.2,
 				});
 				if (!result.canceled) {
-					setImageURI(result.assets[0].uri);
 					const image = `data:image/jpeg;base64,${result.assets[0].base64}`;
 					setImage(image);
-					confirmImage();
+					await confirmImage();
 				}
 			}
 		} catch (error) {
@@ -107,9 +101,8 @@ const Profile = ({ navigation }) => {
 
 	const confirmImage = async () => {
 		try {
-			console.log("A", image);
-			dispatch(setCameraImage({ imageCamera: image }));
 			triggerPostImage({ image, localId });
+			dispatch(setCameraImage({ imageCamera: image }));
 		} catch (error) {
 			console.log(error);
 		}
