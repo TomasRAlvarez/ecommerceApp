@@ -21,8 +21,7 @@ export const userSlice = createSlice({
 			state.value.token = null;
 		},
 		setCameraImage: (state, { payload }) => {
-			//Add logic
-			state.value.imageCamera = payload;
+			state.value.imageCamera = payload.imageCamera;
 		},
 	},
 });

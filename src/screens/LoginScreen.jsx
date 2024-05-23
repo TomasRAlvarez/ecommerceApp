@@ -4,6 +4,7 @@ import { colors } from "../constants/colors";
 import { useDispatch } from "react-redux";
 import { useSignInMutation } from "../services/authService";
 import { setUser } from "../features/User/userSlice";
+import { insertSession } from "../persistence/index";
 
 const LoginScreen = ({ navigation }) => {
 	const handleNavigate = () => {
@@ -29,26 +30,27 @@ const LoginScreen = ({ navigation }) => {
 	useEffect(() => {
 		if (!result.isUninitialized && !result.isLoading) {
 			if (result.isSuccess) {
-				let localId = 1;
+				// insertSession({
+				// 	email: result.data.email,
+				// 	localId: result.data.localId,
+				// 	token: result.data.idToken,
+				// })
+				// 	.then((response) => {
+				// 		console.log(response);
 				dispatch(
 					setUser({
 						email: result.data.email,
 						idToken: result.data.idToken,
-						localId: localId,
+						localId: result.data.localId,
 					})
 				);
-				navigation.navigate("Profile");
+				// })
+				// .catch((e) => console.log(e));
 			} else {
 				Alert.alert("Error", "Los datos ingresados son incorrectos");
 			}
 		}
 	}, [result]);
-
-	const isValidEmail = (mail) => {
-		// Expresión regular para validar el formato del correo electrónico
-		const emailRegex = /\S+@\S+\.\S+/;
-		return emailRegex.test(mail);
-	};
 
 	return (
 		<View style={styles.container}>

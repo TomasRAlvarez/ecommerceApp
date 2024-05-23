@@ -4,6 +4,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Navigator from "./src/navigation/Navigator";
 import { Provider } from "react-redux";
 import store from "./src/store";
+import { initSQLiteDB } from "./src/persistence/index";
+
+(async () => {
+	try {
+		const response = await initSQLiteDB();
+		console.log("DB initialized", response);
+	} catch (error) {
+		console.log({ errorCreatingDB: error });
+	}
+})();
 
 export default function App() {
 	return (

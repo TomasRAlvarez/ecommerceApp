@@ -1,42 +1,25 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
-import { clearUser } from "../features/User/userSlice";
 
-const UserData = ({ user }) => {
-	const dispatch = useDispatch();
-
-	const handleLogOut = () => {
-		Alert.alert(
-			"Cerrar Sesion",
-			"¿Seguro quiere cerrar sesion?",
-			[
-				{
-					text: "Confirmar",
-					onPress: () => dispatch(clearUser()),
-				},
-				{
-					text: "Cancelar",
-				},
-			],
-			{ cancelable: true }
-		);
-	};
+const UserData = ({ user, handleUserImage, image, imageFromBase, handleLogOut }) => {
+	if (!image && imageFromBase) {
+		image = imageFromBase.image;
+	}
 
 	return (
 		<View style={styles.card}>
 			<View style={styles.header}>
-				<MaterialIcons name='account-circle' size={50} color='black' />
+				<TouchableOpacity onPress={() => handleUserImage()}>{image ? <Image source={{ uri: image }} style={styles.image} /> : <Image source={require("../../assets/default-profile.jpg")} style={styles.image} />}</TouchableOpacity>
 				<Text style={styles.username}>{user}</Text>
+				<TouchableOpacity style={styles.editIcon} onPress={handleLogOut}>
+					<MaterialIcons name='logout' size={24} color='black' />
+				</TouchableOpacity>
 			</View>
 			<View style={styles.body}>
 				<View style={styles.personalData}>
 					<Text style={styles.title}>Datos Personales</Text>
-					<TouchableOpacity style={styles.editIcon} onPress={handleLogOut}>
-						<Entypo name='log-out' size={24} color='black' />
-					</TouchableOpacity>
 				</View>
 				<Text>{user}</Text>
 			</View>
@@ -59,11 +42,17 @@ const styles = StyleSheet.create({
 	header: {
 		flexDirection: "row",
 		alignItems: "center",
+		justifyContent: "space-between",
 		marginBottom: 16,
+	},
+	image: {
+		width: 50,
+		height: 50,
+		borderRadius: 50,
 	},
 	username: {
 		marginLeft: 16,
-		fontSize: 20,
+		fontSize: 18,
 		fontWeight: "bold",
 	},
 	body: {

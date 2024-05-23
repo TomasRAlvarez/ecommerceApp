@@ -4,6 +4,7 @@ import { dbUrl } from "../database/realtimeDB";
 export const shopApi = createApi({
 	reducerPath: "shopApi",
 	baseQuery: fetchBaseQuery({ baseUrl: dbUrl }),
+	tagTypes: ["profileImageGet"],
 	endpoints: (builder) => ({
 		getProducts: builder.query({
 			query: () => "products.json",
@@ -41,7 +42,21 @@ export const shopApi = createApi({
 		getOrdersByUser: builder.query({
 			query: () => `orders.json`,
 		}),
+		getProfileImage: builder.query({
+			query: (localId) => `profileImages/${localId}.json`,
+			providesTags: ["profileImageGet"],
+		}),
+		postProfileImage: builder.mutation({
+			query: ({ image, localId }) => ({
+				url: `profileImages/${localId}.json`,
+				method: "PUT",
+				body: {
+					image: image,
+				},
+			}),
+			invalidatesTags: ["profileImageGet"],
+		}),
 	}),
 });
 
-export const { useGetProductsQuery, useGetCategoriesQuery, useGetProductsByCategoryQuery, useGetProductByIdQuery, usePostOrderMutation, useGetOrdersByUserQuery } = shopApi;
+export const { useGetProductsQuery, useGetCategoriesQuery, useGetProductsByCategoryQuery, useGetProductByIdQuery, usePostOrderMutation, useGetOrdersByUserQuery, useGetProfileImageQuery, usePostProfileImageMutation } = shopApi;
