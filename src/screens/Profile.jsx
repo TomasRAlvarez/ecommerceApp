@@ -8,6 +8,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useGetProfileImageQuery, usePostProfileImageMutation } from "../services/shopService";
 import { setCameraImage } from "../features/User/userSlice";
 import { clearUser } from "../features/User/userSlice";
+import { truncateSessionsTable } from "../persistence";
 
 const Profile = ({ navigation }) => {
 	React.useLayoutEffect(() => {
@@ -31,8 +32,13 @@ const Profile = ({ navigation }) => {
 				{
 					text: "Confirmar",
 					onPress: () => {
+						// truncateSessionsTable()
+						// 	.then((response) => {
+						// 		console.log(response);
 						dispatch(clearUser());
 						setImage(null);
+						// })
+						// .catch((e) => console.log(e));
 					},
 				},
 				{

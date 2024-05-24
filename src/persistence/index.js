@@ -43,3 +43,18 @@ export const getSession = () => {
 	});
 	return promise;
 };
+export const truncateSessionsTable = () => {
+	console.log("Will truncate table");
+	const promise = new Promise((resolve, reject) => {
+		db.transaction((tx) => {
+			tx.executeSql(
+				"DELETE FROM sessions",
+				[],
+				(_, result) => resolve(result),
+				(_, error) => reject(error)
+			);
+		});
+	});
+	console.log("will return promise");
+	return promise;
+};

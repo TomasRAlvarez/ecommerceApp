@@ -4,6 +4,7 @@ import { colors } from "../constants/colors";
 import { useSignUpMutation } from "../services/authService";
 import { useDispatch } from "react-redux";
 import { setUser } from "../features/User/userSlice";
+import { insertSession } from "../persistence/index";
 
 const RegisterScreen = ({ navigation }) => {
 	React.useLayoutEffect(() => {
@@ -39,13 +40,23 @@ const RegisterScreen = ({ navigation }) => {
 	useEffect(() => {
 		if (!result.isUninitialized && !result.isLoading) {
 			if (result.isSuccess) {
+				// insertSession({
+				// 	email: result.data.email,
+				// 	localId: result.data.localId,
+				// 	token: result.data.idToken,
+				// })
+				// 	.then((response) => {
+				// 		console.log(response);
 				dispatch(
 					setUser({
 						email: result.data.email,
 						idToken: result.data.idToken,
+						localId: result.data.localId,
 					})
 				);
 				navigation.navigate("Profile");
+				// })
+				// .catch((e) => console.log(e));
 			} else {
 				if (result.error.data.error.errors[0].message === "EMAIL_EXISTS") {
 					Alert.alert("Error", "El mail ingresado ya esta registrado");

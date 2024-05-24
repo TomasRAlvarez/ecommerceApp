@@ -6,6 +6,13 @@ Esta App hecha con React Native fue realizada por Tomás Álvarez para el curso 
 
 EcommerceApp es una aplicación donde se simula todo el flujo real de un ecommerce: navegación por variadas categorías y productos, sección de mejores productos, agregado de productos a un carrito y confirmación de compra. Registro de usuarios y personalización de los mismos utilizando los sensores/periféricos del dispositivo, sin bloquear la vista de los productos para una mejor experiencia.
 
+## Uso
+
+Para utilizar la app debe clonar este repositorio y ejecutar npm install para instalar todos los paquetes. Luego abrir un Android Simulator y ejecutar nuevamente en la consola los comandos "npx expo start" y luego "a" para iniciar la app en el simulador de Android. Sino puede escanear el QR con su celular para usar la app en su dispositivo (debe tener descargada la app de Expo)
+
+Dentro de la app podra navegar libremente por las distintas paginas, pero para poder simular una compra se debe registar o iniciar sesion en caso de ya tener una cuenta. Cuando este registrado va a poder simular una compra, personalizar su foto de perfil haciendo click en ella y ver sus ordenes creadas. Recuerde que para ver las nuevas ordenes las debe refrescar con el icono que se encuentra a la derecha.
+¡Ya esta listo para usarla!
+
 ## Herramientas Principales
 
 - React Native
