@@ -9,10 +9,7 @@ import { initSQLiteDB } from "./src/persistence/index";
 (async () => {
 	try {
 		const response = await initSQLiteDB();
-		console.log("DB initialized", response);
-	} catch (error) {
-		console.log({ errorCreatingDB: error });
-	}
+	} catch (error) {}
 })();
 
 export default function App() {

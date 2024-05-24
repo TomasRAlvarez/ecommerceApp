@@ -34,7 +34,6 @@ const Profile = ({ navigation }) => {
 					onPress: () => {
 						// truncateSessionsTable()
 						// 	.then((response) => {
-						// 		console.log(response);
 						dispatch(clearUser());
 						setImage(null);
 						// })
@@ -70,8 +69,6 @@ const Profile = ({ navigation }) => {
 					mediaTypes: ImagePicker.MediaTypeOptions.Images,
 					quality: 0.2,
 				});
-
-				console.log(result);
 
 				if (!result.canceled) {
 					const image = `data:image/jpeg;base64,${result.assets[0].base64}`;

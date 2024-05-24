@@ -46,7 +46,6 @@ const RegisterScreen = ({ navigation }) => {
 				// 	token: result.data.idToken,
 				// })
 				// 	.then((response) => {
-				// 		console.log(response);
 				dispatch(
 					setUser({
 						email: result.data.email,
