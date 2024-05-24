@@ -48,9 +48,11 @@ EcommerceApp es una aplicación donde se simula todo el flujo real de un ecommer
 
 ## Screenshots
 
-![App Screenshot](./assets/screenshots/ss-inicio.png){ width=30% }
-![App Screenshot](./assets/screenshots/ss-categoria.png){ width=30% }
-![App Screenshot](./assets/screenshots/ss-producto.png){ width=30% }
-![App Screenshot](./assets/screenshots/ss-carrito.png){ width=30% }
-![App Screenshot](./assets/screenshots/ss-login.png){ width=30% }
-![App Screenshot](./assets/screenshots/ss-user.png){ width=30% }
+<div style="display: flex; justify-content: space-between;">
+    <img src="./assets/screenshots/ss-inicio.png" alt="App Screenshot" style="width: 30%;">
+    <img src="./assets/screenshots/ss-categoria.png" alt="App Screenshot" style="width: 30%;">
+    <img src="./assets/screenshots/ss-producto.png" alt="App Screenshot" style="width: 30%;">
+    <img src="./assets/screenshots/ss-carrito.png" alt="App Screenshot" style="width: 30%;">
+    <img src="./assets/screenshots/ss-login.png" alt="App Screenshot" style="width: 30%;">
+    <img src="./assets/screenshots/ss-user.png" alt="App Screenshot" style="width: 30%;">
+</div>
