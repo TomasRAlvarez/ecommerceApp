@@ -23,6 +23,26 @@ const Profile = ({ navigation }) => {
 	const { data: imageFromBase } = useGetProfileImageQuery(localId);
 	const dispatch = useDispatch();
 
+	const handleLogOut = () => {
+		Alert.alert(
+			"Cerrar Sesion",
+			"¿Seguro quiere cerrar sesion?",
+			[
+				{
+					text: "Confirmar",
+					onPress: () => {
+						dispatch(clearUser());
+						setImage(null);
+					},
+				},
+				{
+					text: "Cancelar",
+				},
+			],
+			{ cancelable: true }
+		);
+	};
+
 	const verifyCameraPermissions = async () => {
 		const { granted } = await ImagePicker.requestCameraPermissionsAsync();
 		return granted;
@@ -50,7 +70,6 @@ const Profile = ({ navigation }) => {
 				if (!result.canceled) {
 					const image = `data:image/jpeg;base64,${result.assets[0].base64}`;
 					setImage(image);
-					await confirmImage();
 				}
 			}
 		} catch (error) {
@@ -73,7 +92,6 @@ const Profile = ({ navigation }) => {
 				if (!result.canceled) {
 					const image = `data:image/jpeg;base64,${result.assets[0].base64}`;
 					setImage(image);
-					await confirmImage();
 				}
 			}
 		} catch (error) {
@@ -99,33 +117,19 @@ const Profile = ({ navigation }) => {
 		);
 	};
 
+	useEffect(() => {
+		if (image) {
+			confirmImage();
+		}
+	}, [image]);
+
 	const confirmImage = async () => {
 		try {
-			triggerPostImage({ image, localId });
 			dispatch(setCameraImage({ imageCamera: image }));
+			await triggerPostImage({ image, localId });
 		} catch (error) {
 			console.log(error);
 		}
-	};
-
-	const handleLogOut = () => {
-		Alert.alert(
-			"Cerrar Sesion",
-			"¿Seguro quiere cerrar sesion?",
-			[
-				{
-					text: "Confirmar",
-					onPress: () => {
-						dispatch(clearUser());
-						setImage(null);
-					},
-				},
-				{
-					text: "Cancelar",
-				},
-			],
-			{ cancelable: true }
-		);
 	};
 
 	if (user) {
